@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodDice — 今天吃什麼？讓 FoodDice 決定！</title>
+  <meta name="description" content="FoodDice 是一個 Chrome Extension，疊加在 Google Maps 上，幫助你收藏餐廳、隨機決定今天吃什麼，並回報異常店家換取積分。">
+  <meta name="theme-color" content="#FF6B35">
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="FoodDice — 解決你的選擇困難">
+  <meta property="og:description" content="收藏喜愛餐廳、隨機抽選今日美食、回報異常店家換取積分。">
+  <meta property="og:type"        content="website">
+  <meta property="og:image"       content="assets/og-cover.png">
+
+  <!-- Google Fonts — Noto Sans TC (supports zh-TW/zh-CN/ja/en) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║           NAVBAR             ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="nav-container">
+
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo" aria-label="FoodDice Home">
+        <span class="logo-dice" aria-hidden="true">🎲</span>
+        <span>FoodDice</span>
+      </a>
+
+      <!-- Nav links -->
+      <ul id="nav-links" role="menubar">
+        <li role="none"><a href="index.html"       role="menuitem" data-i18n="nav.home">首頁</a></li>
+        <li role="none"><a href="leaderboard.html" role="menuitem" data-i18n="nav.leaderboard">排行榜</a></li>
+        <li role="none"><a href="guide.html"       role="menuitem" data-i18n="nav.guide">使用教學</a></li>
+        <li role="none"><a href="contact.html"     role="menuitem" data-i18n="nav.contact">聯絡我們</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.install">免費安裝</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║             HERO             ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-inner">
+      <div class="container">
+        <div class="hero-content">
+
+          <!-- Left: Text -->
+          <div class="hero-text">
+            <span class="hero-badge" data-i18n="hero.badge">Chrome 擴充功能</span>
+
+            <h1 class="hero-title" data-i18n-html="hero.title">
+              今天吃什麼？<br>讓 FoodDice 決定！
+            </h1>
+
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
+              收藏喜愛餐廳、隨機抽選今日美食、回報異常店家換取積分
+            </p>
+
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary btn-lg" data-i18n="hero.cta">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 5l7 7-7 7M5 12h14"/>
+                </svg>
+                安裝 Chrome Extension
+              </a>
+              <a href="guide.html" class="btn btn-ghost btn-lg" data-i18n="hero.learn">了解更多</a>
+            </div>
+
+            <div class="hero-stats">
+              <div class="stat">
+                <span class="stat-num">1,200+</span>
+                <span class="stat-label" data-i18n="hero.stat.users">用戶</span>
+              </div>
+              <div class="stat-sep" aria-hidden="true"></div>
+              <div class="stat">
+                <span class="stat-num">8,500+</span>
+                <span class="stat-label" data-i18n="hero.stat.restaurants">收藏餐廳</span>
+              </div>
+              <div class="stat-sep" aria-hidden="true"></div>
+              <div class="stat">
+                <span class="stat-num">500+</span>
+                <span class="stat-label" data-i18n="hero.stat.reports">異常回報</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 3D Dice Visual -->
+          <div class="hero-visual" aria-hidden="true">
+            <!-- Floating food emojis -->
+            <div class="food-floats">
+              <span class="ff ff-1">🍜</span>
+              <span class="ff ff-2">🍕</span>
+              <span class="ff ff-3">🍣</span>
+              <span class="ff ff-4">🍔</span>
+              <span class="ff ff-5">🌮</span>
+              <span class="ff ff-6">🍱</span>
+            </div>
+
+            <!-- CSS 3D Dice -->
+            <div class="dice-scene">
+              <div class="dice-container">
+                <div class="dice">
+
+                  <!-- Face 1 — front -->
+                  <div class="face front">
+                    <div class="dots d1"><span></span></div>
+                  </div>
+
+                  <!-- Face 6 — back -->
+                  <div class="face back">
+                    <div class="dots d6">
+                      <span></span><span></span><span></span>
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+
+                  <!-- Face 3 — right -->
+                  <div class="face right">
+                    <div class="dots d3"><span></span><span></span><span></span></div>
+                  </div>
+
+                  <!-- Face 4 — left -->
+                  <div class="face left">
+                    <div class="dots d4"><span></span><span></span><span></span><span></span></div>
+                  </div>
+
+                  <!-- Face 2 — top -->
+                  <div class="face top">
+                    <div class="dots d2"><span></span><span></span></div>
+                  </div>
+
+                  <!-- Face 5 — bottom -->
+                  <div class="face bottom">
+                    <div class="dots d5"><span></span><span></span><span></span><span></span><span></span></div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="dice-shadow"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave transition to next section -->
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C360,80 720,0 1080,48 C1200,64 1320,36 1440,40 L1440,80 L0,80 Z" fill="#F8F9FA"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║           FEATURES           ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 data-i18n="features.title">三大核心功能</h2>
+        <p data-i18n="features.subtitle">疊加在 Google Maps 上，無縫融入你的日常習慣</p>
+      </div>
+
+      <div class="features-grid">
+
+        <article class="feature-card fade-up" style="--card-delay: 0s">
+          <span class="feature-icon" aria-hidden="true">🗺️</span>
+          <h3 data-i18n="features.save.title">收藏餐廳</h3>
+          <p data-i18n="features.save.desc">在 Google Maps 上瀏覽時，一鍵將餐廳加入個人清單。支援分類標籤，輕鬆管理你的美食口袋名單。</p>
+        </article>
+
+        <article class="feature-card fade-up" style="--card-delay: 0.15s">
+          <span class="feature-icon" aria-hidden="true">🎲</span>
+          <h3 data-i18n="features.random.title">隨機抽選</h3>
+          <p data-i18n="features.random.desc">選擇不了今天吃什麼？擲骰子讓 FoodDice 幫你決定！可以篩選距離、類型，告別選擇困難。</p>
+        </article>
+
+        <article class="feature-card fade-up" style="--card-delay: 0.30s">
+          <span class="feature-icon" aria-hidden="true">⚠️</span>
+          <h3 data-i18n="features.report.title">回報異常</h3>
+          <p data-i18n="features.report.desc">發現 Google Maps 標示營業但實際未開的店家？回報它！累積積分登上排行榜，守護所有美食愛好者。</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║         HOW IT WORKS         ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 data-i18n="howto.title">如何開始使用？</h2>
+        <p data-i18n="howto.subtitle">30 秒完成安裝，立刻解決選餐難題</p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step fade-up" style="--step-delay: 0s">
+          <div class="step-num" aria-hidden="true">1</div>
+          <div class="step-content">
+            <h4 data-i18n="howto.step1.title">安裝 Extension</h4>
+            <p data-i18n="howto.step1.desc">前往 Chrome Web Store，點擊安裝</p>
+          </div>
+        </div>
+
+        <div class="step-arrow" aria-hidden="true">→</div>
+
+        <div class="step fade-up" style="--step-delay: 0.1s">
+          <div class="step-num" aria-hidden="true">2</div>
+          <div class="step-content">
+            <h4 data-i18n="howto.step2.title">開啟 Google Maps</h4>
+            <p data-i18n="howto.step2.desc">在瀏覽器開啟 maps.google.com</p>
+          </div>
+        </div>
+
+        <div class="step-arrow" aria-hidden="true">→</div>
+
+        <div class="step fade-up" style="--step-delay: 0.2s">
+          <div class="step-num" aria-hidden="true">3</div>
+          <div class="step-content">
+            <h4 data-i18n="howto.step3.title">點擊任何餐廳</h4>
+            <p data-i18n="howto.step3.desc">FoodDice 面板自動出現在側邊</p>
+          </div>
+        </div>
+
+        <div class="step-arrow" aria-hidden="true">→</div>
+
+        <div class="step fade-up" style="--step-delay: 0.3s">
+          <div class="step-num" aria-hidden="true">4</div>
+          <div class="step-content">
+            <h4 data-i18n="howto.step4.title">開始享用！</h4>
+            <p data-i18n="howto.step4.desc">收藏、抽選、回報，一切都搞定</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║    SCREENSHOT / MOCKUP       ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="screenshot-section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 data-i18n="screenshots.title">看看它長什麼樣子</h2>
+      </div>
+
+      <div class="fade-up" style="--anim-delay: 0.1s">
+        <div class="browser-frame">
+          <!-- Browser chrome -->
+          <div class="browser-toolbar">
+            <div class="browser-controls" aria-hidden="true">
+              <span class="ctrl-close"></span>
+              <span class="ctrl-min"></span>
+              <span class="ctrl-max"></span>
+            </div>
+            <div class="browser-addressbar">
+              <span class="lock-icon">🔒</span>
+              maps.google.com
+            </div>
+          </div>
+
+          <!-- Browser viewport -->
+          <div class="browser-viewport">
+            <!-- Simplified Google Maps background -->
+            <div class="maps-bg" aria-label="Google Maps interface">
+              <div class="maps-road-h" aria-hidden="true"></div>
+              <div class="maps-road-v" aria-hidden="true"></div>
+              <div class="maps-marker" aria-hidden="true">
+                <div class="marker-pin"></div>
+                <div class="marker-pulse"></div>
+              </div>
+            </div>
+
+            <!-- FoodDice Extension Panel -->
+            <aside class="fooddice-panel" aria-label="FoodDice panel">
+              <div class="fd-panel-header">
+                <span>🎲 FoodDice</span>
+                <small>v1.0</small>
+              </div>
+
+              <div class="fd-restaurant-info">
+                <h4>鼎泰豐 信義店</h4>
+                <div class="fd-stars">★★★★★ <span>4.8 (12,304)</span></div>
+                <div class="fd-tags">
+                  <span class="fd-tag">小籠包</span>
+                  <span class="fd-tag">台灣料理</span>
+                  <span class="fd-tag">$$</span>
+                </div>
+              </div>
+
+              <div class="fd-status">
+                <span class="status-open">營業中 · 10:00–21:00</span>
+              </div>
+
+              <div class="fd-actions">
+                <button class="fd-btn fd-btn-primary">＋ 加入清單</button>
+                <button class="fd-btn fd-btn-secondary">🎲 就吃這個！</button>
+                <button class="fd-btn fd-btn-danger">⚠ 回報未開業</button>
+              </div>
+
+              <div class="fd-footer">積分：320 pts · 本週排名 #12</div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║      LEADERBOARD PREVIEW     ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="leaderboard-preview" id="leaderboard">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 data-i18n="leaderboard.title">本週回報英雄榜</h2>
+        <p data-i18n="leaderboard.subtitle">感謝這些用戶讓 Google Maps 資料更準確</p>
+      </div>
+
+      <!-- Podium (Top 3) -->
+      <div class="podium-wrap fade-up" aria-label="Top 3 leaderboard">
+
+        <!-- 2nd place -->
+        <div class="podium-place place-2">
+          <div class="podium-user-info">
+            <div class="podium-avatar" aria-hidden="true">🦊</div>
+            <div class="podium-name">美食偵探_Lin</div>
+            <div class="podium-score-label">230 pts</div>
+            <div class="podium-reports-label">92 回報</div>
+          </div>
+          <div class="podium-block">
+            <span class="podium-medal" aria-hidden="true">🥈</span>
+            <span class="podium-rank">2</span>
+          </div>
+        </div>
+
+        <!-- 1st place -->
+        <div class="podium-place place-1">
+          <div class="podium-user-info">
+            <div class="podium-avatar" aria-hidden="true">🐼</div>
+            <div class="podium-name">foodie_master</div>
+            <div class="podium-score-label">580 pts</div>
+            <div class="podium-reports-label">152 回報</div>
+          </div>
+          <div class="podium-block">
+            <span class="podium-medal" aria-hidden="true">🥇</span>
+            <span class="podium-rank">1</span>
+          </div>
+        </div>
+
+        <!-- 3rd place -->
+        <div class="podium-place place-3">
+          <div class="podium-user-info">
+            <div class="podium-avatar" aria-hidden="true">🐸</div>
+            <div class="podium-name">地圖糾察隊</div>
+            <div class="podium-score-label">180 pts</div>
+            <div class="podium-reports-label">74 回報</div>
+          </div>
+          <div class="podium-block">
+            <span class="podium-medal" aria-hidden="true">🥉</span>
+            <span class="podium-rank">3</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Table (ranks 4–7) -->
+      <div class="lb-table-wrap fade-up" style="--anim-delay: 0.15s">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="leaderboard.rank">名次</th>
+              <th data-i18n="leaderboard.user">用戶</th>
+              <th data-i18n="leaderboard.reports">回報數</th>
+              <th data-i18n="leaderboard.score">積分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>#4</td><td>🐱 MapWatcher88</td><td>61</td><td>145</td></tr>
+            <tr><td>#5</td><td>🦁 小明的冒險</td><td>48</td><td>112</td></tr>
+            <tr><td>#6</td><td>🐻 台北美食王</td><td>35</td><td>87</td></tr>
+            <tr><td>#7</td><td>🦋 Taipei Foodie</td><td>29</td><td>72</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lb-cta fade-up" style="--anim-delay: 0.2s">
+        <a href="leaderboard.html" class="btn btn-outline" data-i18n="leaderboard.viewAll">查看完整排行榜 →</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║          CTA SECTION         ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="cta-section" aria-label="Call to action">
+    <div class="container">
+      <div class="cta-content fade-up">
+        <h2 data-i18n="cta.title">準備好了嗎？</h2>
+        <p data-i18n="cta.subtitle">免費安裝，立刻解決「今天吃什麼」的世紀難題</p>
+        <a href="#" class="btn btn-white btn-lg" data-i18n="cta.btn">免費安裝 FoodDice</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║            FOOTER            ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-dice" aria-hidden="true">🎲</span>
+            <span>FoodDice</span>
+          </div>
+          <p data-i18n="footer.tagline">解決你的選擇困難，讓吃飯更有趣</p>
+          <div class="social-links">
+            <!-- GitHub -->
+            <a href="#" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.577 9.577 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.338 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.162 22 16.417 22 12c0-5.523-4.477-10-10-10z"/>
+              </svg>
+            </a>
+            <!-- Chrome Web Store -->
+            <a href="#" aria-label="Chrome Web Store">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Pages -->
+        <nav class="footer-nav" aria-label="Footer pages">
+          <h5 data-i18n="footer.pages">頁面</h5>
+          <ul>
+            <li><a href="index.html"       data-i18n="nav.home">首頁</a></li>
+            <li><a href="leaderboard.html" data-i18n="nav.leaderboard">排行榜</a></li>
+            <li><a href="guide.html"       data-i18n="nav.guide">使用教學</a></li>
+            <li><a href="contact.html"     data-i18n="nav.contact">聯絡我們</a></li>
+          </ul>
+        </nav>
+
+        <!-- Links -->
+        <nav class="footer-nav" aria-label="External links">
+          <h5 data-i18n="footer.links">連結</h5>
+          <ul>
+            <li><a href="#" data-i18n="footer.chrome">Chrome Web Store</a></li>
+            <li><a href="#" data-i18n="footer.github">GitHub</a></li>
+            <li><a href="#" data-i18n="footer.privacy">隱私權政策</a></li>
+          </ul>
+        </nav>
+
+        <!-- Language switcher -->
+        <div class="footer-lang">
+          <h5 data-i18n="footer.language">語言</h5>
+          <div class="lang-buttons" role="group" aria-label="Language selector">
+            <button class="lang-btn" data-lang="zh-TW" aria-label="繁體中文">繁中</button>
+            <button class="lang-btn" data-lang="zh-CN" aria-label="简体中文">简中</button>
+            <button class="lang-btn" data-lang="en"    aria-label="English">EN</button>
+            <button class="lang-btn" data-lang="ja"    aria-label="日本語">日本語</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="footer.copyright">© 2025 FoodDice. 版權所有。</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts — i18n must load before main.js -->
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

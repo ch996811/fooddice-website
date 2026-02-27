@@ -1,0 +1,146 @@
+/* ============================================================
+   FoodDice — animations.css
+   All keyframe definitions and animation utility classes.
+   ============================================================ */
+
+/* ── Fade-up (Intersection Observer trigger) ─────────────────── */
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+  transition-delay: var(--anim-delay, 0s);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Fade-in ─────────────────────────────────────────────────── */
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  transition-delay: var(--anim-delay, 0s);
+}
+.fade-in.visible {
+  opacity: 1;
+}
+
+/* ── Hero elements — load immediately (no IntersectionObserver) ─ */
+
+.hero-text {
+  animation: heroSlideIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-visual {
+  animation: heroFadeIn 1s ease 0.2s both;
+}
+.hero-stats {
+  animation: heroSlideIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+@keyframes heroSlideIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── 3D Dice spin ─────────────────────────────────────────────── */
+
+@keyframes diceSpin {
+  0%   { transform: rotateX(0deg)   rotateY(0deg); }
+  16%  { transform: rotateX(90deg)  rotateY(0deg); }
+  33%  { transform: rotateX(90deg)  rotateY(90deg); }
+  50%  { transform: rotateX(180deg) rotateY(90deg); }
+  66%  { transform: rotateX(180deg) rotateY(180deg); }
+  83%  { transform: rotateX(270deg) rotateY(180deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* ── Dice shadow pulse ────────────────────────────────────────── */
+
+@keyframes shadowPulse {
+  0%, 100% { transform: translateX(-50%) scaleX(1);   opacity: 0.5; }
+  50%       { transform: translateX(-50%) scaleX(0.75); opacity: 0.3; }
+}
+
+/* ── Food float icons ─────────────────────────────────────────── */
+
+@keyframes floatFood {
+  0%, 100% { transform: translateY(0)     rotate(-6deg); }
+  50%       { transform: translateY(-14px) rotate(6deg); }
+}
+
+/* ── Hero badge pulse ─────────────────────────────────────────── */
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(255, 107, 53, 0); }
+}
+
+/* ── Feature card hover lift (transition only, no keyframe needed) */
+
+/* ── Skeleton loading ─────────────────────────────────────────── */
+
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e8e8e8 50%,
+    #f0f0f0 75%
+  );
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.6s infinite linear;
+  border-radius: 6px;
+}
+
+/* ── Language fade transition ─────────────────────────────────── */
+
+.lang-fade {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* ── CTA background animated gradient ────────────────────────── */
+
+@keyframes ctaGradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Step number entrance ─────────────────────────────────────── */
+
+@keyframes stepPop {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  70%  { transform: scale(1.15) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ── Reduced-motion override ──────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-in, .hero-text, .hero-visual, .hero-stats {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .dice-container {
+    animation: none !important;
+    transform: rotateX(20deg) rotateY(30deg) !important;
+  }
+
+  .ff {
+    animation: none !important;
+  }
+}

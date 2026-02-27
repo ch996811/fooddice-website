@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排行榜 — FoodDice</title>
+  <meta name="description" content="FoodDice 排行榜 — 查看本週、本月、總榜的回報英雄，看看誰讓 Google Maps 資料最準確。">
+  <meta name="theme-color" content="#FF6B35">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- ── Navbar ─────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" aria-label="FoodDice Home">
+        <span class="logo-dice" aria-hidden="true">🎲</span>
+        <span>FoodDice</span>
+      </a>
+      <ul id="nav-links" role="menubar">
+        <li role="none"><a href="index.html"       role="menuitem" data-i18n="nav.home">首頁</a></li>
+        <li role="none"><a href="leaderboard.html" role="menuitem" data-i18n="nav.leaderboard" aria-current="page">排行榜</a></li>
+        <li role="none"><a href="guide.html"       role="menuitem" data-i18n="nav.guide">使用教學</a></li>
+        <li role="none"><a href="contact.html"     role="menuitem" data-i18n="nav.contact">聯絡我們</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.install">免費安裝</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ── Page Hero ──────────────────────────────────────────── -->
+  <section class="page-hero" aria-label="Page header">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="hero-badge" data-i18n="nav.leaderboard">排行榜</span>
+        <h1 data-i18n="leaderboardPage.hero.title">排行榜</h1>
+        <p data-i18n="leaderboardPage.hero.subtitle">積分越高，代表你讓越多人避免踩雷！</p>
+      </div>
+    </div>
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 C360,60 720,0 1080,36 C1200,48 1320,28 1440,30 L1440,60 L0,60 Z" fill="#F8F9FA"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ── Score Info ──────────────────────────────────────────── -->
+  <section class="lb-info-section">
+    <div class="container">
+      <div class="score-info-box fade-up">
+        <div class="score-info-icon" aria-hidden="true">⭐</div>
+        <div>
+          <h3 data-i18n="leaderboardPage.scoreInfo.title">如何獲得積分？</h3>
+          <p data-i18n="leaderboardPage.scoreInfo.desc">每次回報一間標示營業但實際未開的店家，即可獲得 2 積分。本週榜每週一凌晨重置；總榜永久累計。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── Tabs + Leaderboard ──────────────────────────────────── -->
+  <section class="lb-main-section">
+    <div class="container">
+
+      <!-- Tab Bar -->
+      <div class="tab-bar fade-up" role="tablist" aria-label="Leaderboard period">
+        <button class="tab-btn active" data-tab="weekly"  role="tab" aria-selected="true"  data-i18n="leaderboardPage.tab.weekly">本週</button>
+        <button class="tab-btn"        data-tab="monthly" role="tab" aria-selected="false" data-i18n="leaderboardPage.tab.monthly">本月</button>
+        <button class="tab-btn"        data-tab="allTime" role="tab" aria-selected="false" data-i18n="leaderboardPage.tab.allTime">總榜</button>
+      </div>
+
+      <!-- Podium (Top 3) -->
+      <div id="lb-podium" class="podium-wrap fade-up" aria-label="Top 3 leaderboard" style="--anim-delay:0.1s">
+        <!-- Rendered by leaderboard.js -->
+      </div>
+
+      <!-- Full Table -->
+      <div class="lb-table-wrap fade-up" style="--anim-delay:0.2s">
+        <table aria-label="Leaderboard table">
+          <thead>
+            <tr>
+              <th data-i18n="leaderboardPage.th.rank">名次</th>
+              <th data-i18n="leaderboardPage.th.user">用戶</th>
+              <th data-i18n="leaderboardPage.th.reports">回報數</th>
+              <th data-i18n="leaderboardPage.th.score">積分</th>
+            </tr>
+          </thead>
+          <tbody id="lb-table-body">
+            <!-- Rendered by leaderboard.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div id="lb-empty" class="lb-empty-state" hidden>
+        <div class="lb-empty-icon" aria-hidden="true">🏆</div>
+        <p data-i18n="leaderboardPage.empty">本期還沒有回報紀錄，快去第一個回報！</p>
+        <a href="#" class="btn btn-primary" data-i18n="nav.install">立即安裝</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="cta-section" aria-label="Call to action">
+    <div class="container">
+      <div class="cta-content fade-up">
+        <h2 data-i18n="cta.title">準備好了嗎？</h2>
+        <p data-i18n="cta.subtitle">免費安裝，立刻解決「今天吃什麼」的世紀難題</p>
+        <a href="#" class="btn btn-white btn-lg" data-i18n="cta.btn">免費安裝 FoodDice</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-dice" aria-hidden="true">🎲</span>
+            <span>FoodDice</span>
+          </div>
+          <p data-i18n="footer.tagline">解決你的選擇困難，讓吃飯更有趣</p>
+          <div class="social-links">
+            <a href="#" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.577 9.577 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.338 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.162 22 16.417 22 12c0-5.523-4.477-10-10-10z"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="Chrome Web Store">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <nav class="footer-nav" aria-label="Footer pages">
+          <h5 data-i18n="footer.pages">頁面</h5>
+          <ul>
+            <li><a href="index.html"       data-i18n="nav.home">首頁</a></li>
+            <li><a href="leaderboard.html" data-i18n="nav.leaderboard">排行榜</a></li>
+            <li><a href="guide.html"       data-i18n="nav.guide">使用教學</a></li>
+            <li><a href="contact.html"     data-i18n="nav.contact">聯絡我們</a></li>
+          </ul>
+        </nav>
+        <nav class="footer-nav" aria-label="External links">
+          <h5 data-i18n="footer.links">連結</h5>
+          <ul>
+            <li><a href="#" data-i18n="footer.chrome">Chrome Web Store</a></li>
+            <li><a href="#" data-i18n="footer.github">GitHub</a></li>
+            <li><a href="#" data-i18n="footer.privacy">隱私權政策</a></li>
+          </ul>
+        </nav>
+        <div class="footer-lang">
+          <h5 data-i18n="footer.language">語言</h5>
+          <div class="lang-buttons" role="group" aria-label="Language selector">
+            <button class="lang-btn" data-lang="zh-TW" aria-label="繁體中文">繁中</button>
+            <button class="lang-btn" data-lang="zh-CN" aria-label="简体中文">简中</button>
+            <button class="lang-btn" data-lang="en"    aria-label="English">EN</button>
+            <button class="lang-btn" data-lang="ja"    aria-label="日本語">日本語</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer.copyright">© 2025 FoodDice. 版權所有。</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <!-- Firebase SDK (only loaded if needed by leaderboard.js) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="js/leaderboard.js"></script>
+
+</body>
+</html>
