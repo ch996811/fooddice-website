@@ -1,6 +1,3 @@
-# Firebase real API key — never commit this
-js/firebase-config.js
-
 # OS / Editor
 .DS_Store
 Thumbs.db
